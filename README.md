@@ -7,7 +7,7 @@
   - [📘 Naming Pattern Reference](#-naming-pattern-reference)
     - [Core Elements](#core-elements)
     - [Additional Document Elements](#additional-document-elements)
-    - [Additional Elements (for all but for Document)](#additional-elements-for-all-but-for-document)
+    - [Additional Elements (for all except Document)](#additional-elements-for-all-except-document)
     - [Additional Data Elements](#additional-data-elements)
     - [Additional Script Elements](#additional-script-elements)
     - [Additional Image Elements](#additional-image-elements)
@@ -39,6 +39,8 @@
 
 ## 📘 Naming Pattern Reference
 
+- Allowed words are restricted due to an upcoming naming convention formatter implementation.
+
 ### Core Elements
 
 | Element                                  | Req. | Format / Examples                                                                                             | Description                                                                                                                                                                                  |
@@ -50,12 +52,12 @@
 | `[Confidentiality]`, `[confidentiality]` | ⬜    | `internal`, `confidential`, `public`                                                                          | Indicates visibility or access level. Required for sensitive documents. Use **lowercase**.                                                                                                   |
 | `env`                                    | ⬜    | `dev`, `test`, `prod`, `local`, `stage`, `qa`, `mock`, `training`, `inference`, `demo`, `ci`                  | Environment the data relates to. Use **lowercase**.                                                                                                                                          |
 
-> ✅ `Element` = required  ⬜ `[Element]` = optional
-> Only these dates, versions, statuses, confidentialities and envs are allowed.
-> All languages on [ISO 639-1 language code](https://de.wikipedia.org/wiki/Liste_der_ISO-639-Sprachcodes) Set 1 are allowed.
-> Element can be lowercase or capitalized for consistency and to avoid confusion.
-> Delimiter only need to between elements. If there is no other element the delimiter must not be used.
-> **The elements must not contains fixed words from other elements.**
+> ✅ `Element` = required  ⬜ `[Element]` = optional
+> Only these dates, versions, statuses, confidentiality levels and environments are allowed.
+> All languages in [ISO 639-1 language code](https://de.wikipedia.org/wiki/Liste_der_ISO-639-Sprachcodes) Set 1 are allowed.
+> Elements can be lowercase or capitalized for consistency and to avoid confusion.
+> Delimiters are only needed between elements. If there is no other element, the delimiter must not be used.
+> **The elements must not contain fixed words from other elements.**
 
 ### Additional Document Elements
 
@@ -64,7 +66,7 @@
 | `Subject`  | ✅    | `Project_Plan`, `Q4_Report`, `Annual_Summary` | Central topic, title, or focus of the document. Should summarize the content clearly and concisely. Examples: document title, meeting name, project code, deliverable, report type, presentation focus, or research theme. Use **Capitalized_Snake_Case**. |
 | `[Author]` | ⬜    | `Firstname`, `Surname`, `Firstname_Surname`   | Creator or responsible person. Use initials or full name for traceability. Use **Capitalized_Snake_Case**.                                                                                                                                                 |
 
-### Additional Elements (for all but for Document)
+### Additional Elements (for all except Document)
 
 | Element   | Req. | Format / Examples                            | Description                                                                                                      |
 | --------- | ---- | -------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
@@ -86,8 +88,8 @@
 | `Verb`   | ✅    | `Get`, `Set`, `Install`, `Deploy`, `Backup`   | For PowerShell scripts, use an approved verb from the [PowerShell approved verb list](https://learn.microsoft.com/en-us/powershell/scripting/developer/cmdlet/approved-verbs-for-windows-powershell-commands?view=powershell-7.5) to describe the action. Use **capitalized words** (e.g. `Add`). |
 | `os`     | ⬜    | `linux`, `macos`, `windows`, `cross`, `other` | Target operating system or compatibility. Use **lowercase**.                                                                                                                                                                                                                                      |
 
-> Only these prefix, os formats are allowed.
-> All [PowerShell approved verbs](https://learn.microsoft.com/en-us/powershell/scripting/developer/cmdlet/approved-verbs-for-windows-powershell-commands?view=powershell-7.5) on this offical microsoft documentation are allowed.
+> Only these prefix and os formats are allowed.
+> All [PowerShell approved verbs](https://learn.microsoft.com/en-us/powershell/scripting/developer/cmdlet/approved-verbs-for-windows-powershell-commands?view=powershell-7.5) from this official Microsoft documentation are allowed.
 
 ### Additional Image Elements
 
@@ -99,7 +101,7 @@
 | `resolution`  | ⬜    | `2160p`, `3840x2160`, `retina`, `2k`, `4k`, `8k`                 | Denote size or target quality. Helpful when maintaining multiple sizes. Use **lowercase**.                                                          |
 
 > Only these figure formats are allowed.
-> The type and the resolut elements are not checked for these specific ones because there are too many and new ones are coming up.
+> The type and resolution elements are not validated against specific values because there are too many possibilities and new ones emerge frequently.
 
 ### Additional Audio Elements
 
@@ -166,8 +168,8 @@
 ### Configuration Files
 
 - Whether to use `-` or `_` depends on the environment.
-  - yaml, ini consistent with the rest.
-  - **But I like to stick with `-`.**
+  - YAML and INI should be consistent with other configuration formats.
+  - **Recommendation: Use `-` for better readability.**
 - `[date]-subject-[env]-[version]-[status].ext`
 - **kebab-case**
 - **Exceptions:** `compose.yaml`, `env.local`, `config_prod.py`, etc.
