@@ -46,6 +46,7 @@
 | Element                                  | Req. | Format / Examples                                                                                             | Description                                                                                                                                                                                  |
 | ---------------------------------------- | ---- | ------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `Date`, `date`                           | ✅    | `YYYY-MM-DD`, `YYYY-MM`, `YYYY`<br>`YYYY-MM-DD-YYYY-MM-DD`, `YYYY-YYYY`<br>`YYYY-MM-DD-ongoing`, `until-YYYY` | Date or date range in [ISO 8601](https://de.wikipedia.org/wiki/ISO_8601) format. Choose precision based on context. Avoid special characters; use only `A-Z`, `0-9`, `_`, and `-` in ranges. |
+| `Time`, `time`                           | ⬜    | `HH-MM-SS`, `HH-MM` (24h)<br>Attaches to `Date`: `YYYY-MM-DD_HH-MM-SS`                                       | Optional appendage to a full `YYYY-MM-DD` `Date` (never standalone, not on partial `YYYY-MM`/`YYYY`). Start time, local wall-clock, 24h (`HH` 00-23, `MM`/`SS` 00-59) for recordings or captures on image, audio, video, and folder names. Never colons. Parsed greedily, so the subject's first token must not be a lone two-digit number (it would be read as seconds). Prefixes and later digits like `episode-07` are fine. See [best-practices](best-practices.md). |
 | `[Version]`, `[version]`                 | ⬜    | `v1`, `v2.3`, `v10.01`                                                                                        | Version number. Use when tracking iterations, drafts, or formal releases. Use **kebab-case**.                                                                                                |
 | `[Status]`, `[status]`                   | ⬜    | `draft`, `final`, `signed`, `archived`, `encrypted`, `backup`, `legacy`                                       | Document workflow or approval state. Often paired with `Version`. Use **lowercase**.                                                                                                         |
 | `[Language]`, `[language]`               | ⬜    | `en`, `de`, `fr`                                                                                              | [ISO 639-1 language code](https://de.wikipedia.org/wiki/Liste_der_ISO-639-Sprachcodes) - Set 1. Use **lowercase**.                                                                           |
@@ -53,7 +54,8 @@
 | `env`                                    | ⬜    | `dev`, `test`, `prod`, `local`, `stage`, `qa`, `mock`, `training`, `inference`, `demo`, `ci`                  | Environment the data relates to. Use **lowercase**.                                                                                                                                          |
 
 > ✅ `Element` = required  ⬜ `[Element]` = optional
-> Only these dates, versions, statuses, confidentiality levels and environments are allowed.
+> `[date][_time]` (brackets touching, no delimiter between them) means `time` is an optional appendage written directly onto `date` with a leading `_`, e.g. `2026-06-10_17-36-26`. It is the only such glued element.
+> Only these dates, times, versions, statuses, confidentiality levels and environments are allowed.
 > All languages in [ISO 639-1 language code](https://de.wikipedia.org/wiki/Liste_der_ISO-639-Sprachcodes) Set 1 are allowed.
 > Elements can be lowercase or capitalized for consistency and to avoid confusion.
 > Delimiters are only needed between elements. If there is no other element, the delimiter must not be used.
@@ -279,7 +281,7 @@
 
 ### Image Files
 
-- `[figure]-[date]-subject-[contributor]-[type]-[resolution]-[version].ext`
+- `[figure]-[date][_time]-subject-[contributor]-[type]-[resolution]-[version].ext`
 - **kebab-case**
 
 | Type | Extension | Examples                                                                                        |
@@ -291,7 +293,7 @@
 
 ### Audio Files
 
-- `[date]-subject-[contributor]-[type]-[frequency]-[quality]-[version]-[status]-[language].ext`
+- `[date][_time]-subject-[contributor]-[type]-[frequency]-[quality]-[version]-[status]-[language].ext`
 - **kebab-case**
 
 | Type | Extension | Examples                                                                                                                          |
@@ -300,17 +302,17 @@
 | WAV  | `.wav`    | `2025-04-30-nature-forest-recording-48k-raw-v1-draft-en.wav`, `2023-11-12-lab-session-recording-44k-processed-v3-final-en.wav`    |
 | FLAC | `.flac`   | `2025-01-01-speech-dataset-commands-16k-raw-v1-final-en.flac`, `2024-10-ambient-office-noise-48k-lossless-v2-final-en.flac`       |
 | OGG  | `.ogg`    | `2025-03-10-ui-click-effect-22k-compressed-v1-final.ogg`, `alert-notification-48k-lossless-v2-final.ogg`                          |
-| M4A  | `.m4a`    | `2025-02-15-podcast-episode-07-narration-44.1k-compressed-v1-final-en.m4a`, `voice-memo-16k-raw-v1-draft-en.m4a`                  |
+| M4A  | `.m4a`    | `2025-02-15-podcast-episode-07-narration-44.1k-compressed-v1-final-en.m4a`, `voice-memo-16k-raw-v1-draft-en.m4a`, `2026-06-10_17-36-26-lecture-recording-44k-raw-v1-de.m4a` |
 
 ### Video Files
 
-- `[date]-subject-[contributor]-[type]-[resolution]-[quality]-[version]-[status]-[language].ext`
+- `[date][_time]-subject-[contributor]-[type]-[resolution]-[quality]-[version]-[status]-[language].ext`
 - **kebab-case**
 
 | Type | Extension | Examples                                                                                                                       |
 | ---- | --------- | ------------------------------------------------------------------------------------------------------------------------------ |
 | MP4  | `.mp4`    | `2025-05-18-lab-procedure-tutorial-recording-1080p-edited-v1-final-en.mp4`, `2024-12-experiment-demo-720p-raw-v1-draft-en.mp4` |
-| MOV  | `.mov`    | `2025-04-b-roll-lab-setup-4k-raw-v1.mov`, `2024-11-interview-session-1-1080p-edited-v2-final-en.mov`                           |
+| MOV  | `.mov`    | `2025-04-b-roll-lab-setup-4k-raw-v1.mov`, `2024-11-interview-session-1-1080p-edited-v2-final-en.mov`, `2026-06-10_17-36-26-lecture-recording-1080p-raw-v1-de.mov` |
 | MKV  | `.mkv`    | `conference2025-session-3-presentation-720p-compressed-v1-final-en.mkv`, `projectx-overview-1080p-final.mkv`                   |
 | WEBM | `.webm`   | `screencast-installation-guide-1080p-edited-v1-final-en.webm`, `2023-ui-demo-walkthrough-720p-final-en.webm`                   |
 | AVI  | `.avi`    | `legacy-training-recording-480p-final-en.avi`, `2022-05-field-capture-raw-720p-v1-draft.avi`                                   |
@@ -321,9 +323,9 @@
 
 Based on scientific research and institutional best practices for naming folders across Windows, macOS, and Linux:
 
-- `[date]-subject`
+- `[date][_time]-subject`
 - `[prefix]-subject`
-- `[prefix]-[date]-subject`
+- `[prefix]-[date][_time]-subject`
 - **kebab-case**
 
 | Pattern            | Examples                                        | Use Case                                             |
@@ -333,4 +335,5 @@ Based on scientific research and institutional best practices for naming folders
 | `[prefix]-subject` | `01-project-proposal`                           | Enforced order in workflows or onboarding steps      |
 |                    | `10-experiment-results`                         | Ordered batch folders (e.g., steps in a pipeline)    |
 | Combined           | `01-2025-05-18-lab-recordings`                  | When both chronological and step order matter        |
+| `[date][_time]-subject` | `2026-06-10_17-36-26-session-recording`      | Sub-day precision: multiple recordings or captures per day |
 | General project    | `data-cleaning`, `model-training`, `audio-sync` | Standard project or component folders                |
