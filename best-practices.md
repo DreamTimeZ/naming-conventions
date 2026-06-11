@@ -52,6 +52,18 @@ ISO 8601-2:2019 provides standardized extensions for representing time spans and
 - Cambridge University Digital Preservation Manual (Farmer, 2022)
 - NASA Space Physics Data Facility Recommended File and Data Collection Naming Practices
 
+## Time of Day in Filenames
+
+When a recording, capture, or log needs sub-day precision, append the start time to the date as a separate metadata unit:
+
+- Format: `YYYY-MM-DD_HH-MM-SS` (24h), or `YYYY-MM-DD_HH-MM` when seconds are not meaningful.
+- The `_` separates the date unit from the time unit; hyphens separate the components within each unit. In the kebab-case schemes (image, audio, video, folders) this is the only `_`: every other element there is `-`-separated. The `_` is therefore a deliberate structural anchor that lets a parser lift the whole timestamp out before splitting the remainder on `-`. See [Punctuation](#punctuation) for the underlying `_`-delimits-units, `-`-delimits-words convention.
+- Colons (`HH:MM:SS`) are never used: they are illegal or problematic in filenames across platforms.
+- Use only when the time of day is meaningful (multiple recordings per day, session ordering). A date alone stays correct when the start time is unknown or irrelevant.
+- Parsing is greedy and anchored at the date field, after any leading element(s) before the date (prefix, figure): `YYYY-MM-DD(_HH-MM(-SS)?)?`. Because the match is maximal-munch, `..._17-36-26-...` always reads `17-36-26` as `HH-MM-SS`, never as `HH-MM` plus a subject starting `26-`. A subject whose first token is a lone two-digit number is therefore disallowed when a time is present. Numeric prefixes (before the date) and digits later in the subject (`episode-07`) are unaffected.
+- Valid ranges, zero-padded: `HH` 00-23, `MM` and `SS` 00-59.
+- The time is local wall-clock time. ISO 8601 zone designators (`Z`, `+01:00`) are not used because `:` and `+` are filename-hostile.
+
 ## Date Format Scientific Research (YYYYMMDD vs YYYY-MM-DD)
 
 Research and standards support the following findings regarding date formats:
